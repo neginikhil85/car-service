@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.*;
 public interface AccessoryController {
 
     @GetMapping("/{id}") // accessories/2000
-    Accessory getAccessoryById(long id);
+    Accessory getAccessoryById(@PathVariable Long id);
 
     @GetMapping("/car/{id}") // accessories/car/2000
-    Car getCarByAccessoryId(long id);
+    Car getCarByAccessoryId(@PathVariable Long id);
 
     @GetMapping("/excel")
     String writeAccessoriesIntoExcel();

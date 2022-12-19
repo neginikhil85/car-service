@@ -15,12 +15,12 @@ public class AccessoryControllerImpl implements AccessoryController {
     private final AccessoryService accessoryService;
 
     @Override
-    public Accessory getAccessoryById(long id) {
+    public Accessory getAccessoryById(Long id) {
         return accessoryService.findAccessoryById(id);
     }
 
     @Override
-    public Car getCarByAccessoryId(long id) {
+    public Car getCarByAccessoryId(Long id) {
         return accessoryService.findCarByAccessoryId(id);
     }
 

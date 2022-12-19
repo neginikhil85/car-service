@@ -16,7 +16,7 @@ import java.util.List;
 public class CarControllerImpl implements CarController {
     private final CarService carService;
 
-    public Car getCarById(long id) {
+    public Car getCarById(Long id) {
         return carService.findCarById(id);
     }
 
@@ -34,7 +34,7 @@ public class CarControllerImpl implements CarController {
         return carService.getAllSortedCars(sortBy);
     }
 
-    public Inventory getInventoryByCarId(long id) {
+    public Inventory getInventoryByCarId(Long id) {
         return carService.findInventoryByCarId(id);
     }
 

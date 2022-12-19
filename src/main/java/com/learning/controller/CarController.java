@@ -10,7 +10,7 @@ import java.util.List;
 public interface CarController {
 
     @GetMapping("/{id}") // cars/101
-    Car getCarById(@PathVariable long id);
+    Car getCarById(@PathVariable Long id);
 
     @GetMapping
     List<Car> getAllCars();
@@ -21,7 +21,7 @@ public interface CarController {
     List<Car> getAllSortedCars(@RequestParam(value ="sortBy", required = false, defaultValue = "") String sortBy);
 
     @GetMapping("/inventory/{id}")
-    Inventory getInventoryByCarId(@PathVariable long id);
+    Inventory getInventoryByCarId(@PathVariable Long id);
 
     @PostMapping
     String createCar(@RequestBody Car car);

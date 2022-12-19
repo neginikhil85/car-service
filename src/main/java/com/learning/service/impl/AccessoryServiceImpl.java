@@ -29,8 +29,8 @@ public class AccessoryServiceImpl implements AccessoryService {
     private final XSSFWorkbook xssfWorkbook;
 
     @Override
-    public Accessory findAccessoryById(long id) {
-         return accessoryRepository.findById(id)
+    public Accessory findAccessoryById(Long id) {
+        return accessoryRepository.findById(id)
                 .orElseThrow(() -> new AccessoryNotFoundException(ExceptionMessage.ACCESSORY_NOT_FOUND));
     }
 
@@ -40,7 +40,7 @@ public class AccessoryServiceImpl implements AccessoryService {
     }
 
     @Override
-    public Car findCarByAccessoryId(long id) {
+    public Car findCarByAccessoryId(Long id) {
        return carService.findCarById(findAccessoryById(id).getCarId());
     }
 
