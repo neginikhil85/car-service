@@ -5,6 +5,7 @@ import com.learning.entities.Accessory;
 import com.learning.entities.Car;
 import com.learning.excel_data.reader.AccessoryReader;
 import com.learning.excel_data.writer.AccessoryWriter;
+import com.learning.exceptions.AccessoryNotFoundException;
 import com.learning.repository.AccessoryRepository;
 import com.learning.service.AccessoryService;
 import com.learning.service.CarService;
@@ -15,7 +16,6 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Slf4j
@@ -29,10 +29,9 @@ public class AccessoryServiceImpl implements AccessoryService {
     private final XSSFWorkbook xssfWorkbook;
 
     @Override
-    public Optional<Accessory> findAccessoryById(long id) {
-        List<Accessory> allAccessories = accessoryRepository.findAll();
-        Optional<Accessory> optionalAccessory = allAccessories.stream().filter(accessory -> accessory.getId() == id).findFirst();
-        return optionalAccessory;
+    public Accessory findAccessoryById(long id) {
+         return accessoryRepository.findById(id)
+                .orElseThrow(() -> new AccessoryNotFoundException(ExceptionMessage.ACCESSORY_NOT_FOUND));
     }
 
     @Override
@@ -41,14 +40,8 @@ public class AccessoryServiceImpl implements AccessoryService {
     }
 
     @Override
-    public Optional<Car> findCarByAccessoryId(long id) {
-        Optional<Accessory> optionalAccessory = findAccessoryById(id);
-        if(optionalAccessory.isPresent()) {
-            Accessory accessory = optionalAccessory.get();
-            long carId = accessory.getCarId();
-            return carService.findCarById(carId);
-        }
-        return Optional.empty();
+    public Car findCarByAccessoryId(long id) {
+       return carService.findCarById(findAccessoryById(id).getCarId());
     }
 
     @Override

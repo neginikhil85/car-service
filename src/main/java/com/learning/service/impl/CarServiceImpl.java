@@ -13,10 +13,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.IOException;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -29,21 +32,39 @@ public class CarServiceImpl implements CarService {
     private final CarWriter carWriter;
     private final XSSFWorkbook xssfWorkbook;
 
-    public Optional<Car> findCarById(Long id) {
-        return carRepository.findAll()
-                .stream()
-                .filter(car -> car.getId().equals(id))
-                .findFirst();
+    public Car findCarById(Long id) {
+        return carRepository.findById(id).
+                orElseThrow(() -> new CarNotFoundException(ExceptionMessage.CAR_NOT_FOUND));
     }
 
     public List<Car> findAllCars() {
         return carRepository.findAll();
     }
 
-    public Optional<Inventory> findInventoryByCarId(Long id) {
-        return  inventoryService.findInventoryById((findCarById(id))
-                .orElseThrow(() -> new CarNotFoundException(String.format(ExceptionMessage.CAR_NOT_FOUND)))
-                .getInventoryId());
+    @Override
+    public List<Car> getAllSortedCars(String sortBy) {
+        Comparator<Car> comparator;
+        switch (sortBy) {
+            case "name":
+                comparator = (car1, car2) -> car1.getName().compareTo(car2.getName());
+                break;
+            case "modelNo":
+                comparator = (car1, car2) -> car1.getModelNo().compareTo(car2.getModelNo());
+                break;
+            case "brand":
+                comparator = (car1, car2) -> car1.getBrand().compareTo(car2.getBrand());
+                break;
+            default:
+                comparator = (car1, car2) -> car1.getId().compareTo(car2.getId());
+        }
+        return findAllCars().stream()
+                .sorted(comparator) // sorted list
+                .collect(Collectors.toList());
+
+    }
+
+    public Inventory findInventoryByCarId(Long id) {
+        return  inventoryService.findInventoryById((findCarById(id).getInventoryId()));
     }
 
     @Override

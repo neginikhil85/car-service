@@ -4,6 +4,7 @@ import com.learning.constants.ExceptionMessage;
 import com.learning.entities.Inventory;
 import com.learning.excel_data.reader.InventoryReader;
 import com.learning.excel_data.writer.InventoryWriter;
+import com.learning.exceptions.InventoryNotFoundException;
 import com.learning.repository.InventoryRepository;
 import com.learning.service.InventoryService;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Slf4j
@@ -26,9 +26,9 @@ public class InventoryServiceImpl implements InventoryService {
     private final XSSFWorkbook xssfWorkbook;
 
     @Override
-    public Optional<Inventory> findInventoryById(long id) {
-        return inventoryRepository.findAll().stream()
-                .filter(inventory -> inventory.getId() == id).findFirst();
+    public Inventory findInventoryById(long id) {
+        return inventoryRepository.findById(id)
+                .orElseThrow(() -> new InventoryNotFoundException(ExceptionMessage.INVENTORY_NOT_FOUND));
     }
 
     @Override

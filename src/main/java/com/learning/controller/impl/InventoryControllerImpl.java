@@ -1,13 +1,10 @@
 package com.learning.controller.impl;
 
-import com.learning.constants.ExceptionMessage;
 import com.learning.controller.InventoryController;
 import com.learning.entities.Inventory;
-import com.learning.exceptions.InventoryNotFoundException;
 import com.learning.service.InventoryService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
@@ -18,16 +15,8 @@ public class InventoryControllerImpl implements InventoryController {
     private final InventoryService inventoryService;
 
 
-    public Inventory getInventoryById(@PathVariable Long id) {
-        Inventory inventory = null;
-        try {
-            inventory = inventoryService.findInventoryById(id)
-                    .orElseThrow(() -> new InventoryNotFoundException(
-                            String.format(ExceptionMessage.INVENTORY_NOT_FOUND, id)));
-        } catch (Exception exception) {
-            log.error(exception.getMessage() + exception);
-        }
-       return inventory;
+    public Inventory getInventoryById(Long id) {
+        return inventoryService.findInventoryById(id);
     }
 
     @Override

@@ -8,9 +8,9 @@ import java.util.Optional;
 
 public interface AccessoryService {
 
-    Optional<Accessory> findAccessoryById(long id);
+    Accessory findAccessoryById(long id);
     List<Accessory> findAllAccessories();
-    Optional<Car> findCarByAccessoryId(long id);
+    Car findCarByAccessoryId(long id);
     void createAccessory(Accessory accessory);
     void updateAccessoryById(Long id, Accessory accessory);
     void deleteAccessoryById(Long id);

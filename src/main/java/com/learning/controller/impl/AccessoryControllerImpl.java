@@ -1,11 +1,8 @@
 package com.learning.controller.impl;
 
-import com.learning.constants.ExceptionMessage;
 import com.learning.controller.AccessoryController;
 import com.learning.entities.Accessory;
 import com.learning.entities.Car;
-import com.learning.exceptions.AccessoryNotFoundException;
-import com.learning.exceptions.CarNotFoundException;
 import com.learning.service.AccessoryService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,26 +16,12 @@ public class AccessoryControllerImpl implements AccessoryController {
 
     @Override
     public Accessory getAccessoryById(long id) {
-        Accessory accessory = null;
-        try {
-            accessory = accessoryService.findAccessoryById(id)
-                    .orElseThrow(() -> new AccessoryNotFoundException(String.format(ExceptionMessage.ACCESSORY_NOT_FOUND ,id)));
-        } catch (Exception exception) {
-            log.error(exception.getMessage() + exception);
-        }
-        return accessory;
+        return accessoryService.findAccessoryById(id);
     }
 
     @Override
     public Car getCarByAccessoryId(long id) {
-        Car car = null;
-        try {
-            car = accessoryService.findCarByAccessoryId(id)
-                    .orElseThrow(() -> new CarNotFoundException(ExceptionMessage.CAR_NOT_FOUND + id));
-        } catch (Exception exception) {
-            log.error(exception.getMessage() + exception);
-        }
-        return car;
+        return accessoryService.findCarByAccessoryId(id);
     }
 
     @Override
