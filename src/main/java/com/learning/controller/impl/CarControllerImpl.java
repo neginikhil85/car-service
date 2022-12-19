@@ -15,15 +15,14 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CarControllerImpl implements CarController {
     private final CarService carService;
-
+    @Override
     public Car getCarById(Long id) {
         return carService.findCarById(id);
     }
-
+    @Override
     public List<Car> getAllCars() {
         return carService.findAllCars();
     }
-
     @Override
     public String writeCarsIntoExcel() {
         carService.writeCarsIntoExcel();
@@ -33,29 +32,24 @@ public class CarControllerImpl implements CarController {
     public List<Car> getAllSortedCars(String sortBy) {
         return carService.getAllSortedCars(sortBy);
     }
-
     public Inventory getInventoryByCarId(Long id) {
         return carService.findInventoryByCarId(id);
     }
-
     @Override
     public String createCar(Car car) {
         carService.createCar(car);
         return "Car successfully created";
     }
-
     @Override
     public String saveCarsFromExcel() {
         carService.saveCarsFromExcel();
         return "SUCCESS";
     }
-
     @Override
     public String updateCarById(Long id, Car car) {
         carService.updateCarById(id, car);
         return "Car successfully updated";
     }
-
     @Override
     public String deleteCarById(Long id) {
         carService.deleteCarById(id);

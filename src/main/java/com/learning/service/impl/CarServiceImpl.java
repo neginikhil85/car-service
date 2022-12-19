@@ -13,12 +13,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.IOException;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -44,18 +42,18 @@ public class CarServiceImpl implements CarService {
     @Override
     public List<Car> getAllSortedCars(String sortBy) {
         Comparator<Car> comparator;
-        switch (sortBy) {
+        switch (sortBy.toLowerCase()) {
             case "name":
-                comparator = (car1, car2) -> car1.getName().compareTo(car2.getName());
+                comparator = Comparator.comparing(car -> car.getName());
                 break;
-            case "modelNo":
-                comparator = (car1, car2) -> car1.getModelNo().compareTo(car2.getModelNo());
+            case "modelno":
+                comparator = Comparator.comparing(car -> car.getModelNo());
                 break;
             case "brand":
-                comparator = (car1, car2) -> car1.getBrand().compareTo(car2.getBrand());
+                comparator = Comparator.comparing(car -> car.getBrand());
                 break;
             default:
-                comparator = (car1, car2) -> car1.getId().compareTo(car2.getId());
+                comparator = Comparator.comparing(car -> car.getId());
         }
         return findAllCars().stream()
                 .sorted(comparator) // sorted list
